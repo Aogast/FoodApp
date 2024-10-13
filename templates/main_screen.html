@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 40px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            text-align: center;
+        }
+        h1 {
+            font-size: 24px;
+        }
+        .btn {
+            padding: 10px 20px;
+            background-color: #008CBA;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 10px;
+            display: inline-block;
+        }
+        .logout-btn {
+            padding: 10px 20px;
+            background-color: #FF5733;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Добро подаловать, {{ username }}!</h1>
+        <p>Выберите одну из опций</p>
+        <a href="/add_dish" class="btn">Твои блюда</a>
+        <a href="/track_consumption" class="btn">Добавить новый прием пищи</a>
+        <a href="/statistics" class="btn">Статистика потребления</a>
+        <a href="/logout" class="logout-btn">Выйти</a>
+    </div>
+</body>
+</html>

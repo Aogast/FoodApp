@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Статистика по потреблению пищи по дням</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            width: 80%;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        input {
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .btn {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .date-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        canvas {
+            max-width: 600px;
+            max-height: 400px;
+        }
+        .back-to-home:hover {
+            background-color: #45a049;
+        }
+        .back-to-home {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+    </style>
+</head>
+<body>
+<a href="/" class="back-to-home">Главный экран</a>
+    <div class="container">
+        <h1>Статистика по потреблению пищи по дням</h1>
+        <div class="date-buttons">
+            <form action="/statistics" method="POST">
+                <input type="hidden" name="range" value="last_week">
+                <button type="submit" class="btn">Показать за последнюю неделю</button>
+            </form>
+            <form action="/statistics" method="POST">
+                <input type="hidden" name="range" value="last_month">
+                <button type="submit" class="btn">Показать за последний месяц</button>
+            </form>
+        </div>
+        <form action="/statistics" method="POST">
+            <div class="form-group">
+                <input type="date" name="start_date" required>
+                <input type="date" name="end_date" required>
+            </div>
+            <button type="submit" class="btn">Показать статистику за выбранное время</button>
+        </form>
+    </div>
+
+    <div class="container">
+        <canvas id="nutritionChart"></canvas>
+        <canvas id="caloriesChart"></canvas>
+    </div>
+
+    <script>
+        const labels = {{ dates | tojson }};
+        const totalFats = {{ total_fats | tojson }};
+        const totalProteins = {{ total_proteins | tojson }};
+        const totalCarbs = {{ total_carbs | tojson }};
+        const totalCalories = {{ total_calories | tojson }};
+
+        // Nutrition Chart
+        const ctx1 = document.getElementById('nutritionChart').getContext('2d');
+        const nutritionChart = new Chart(ctx1, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Жиры (г)',
+                        data: totalFats,
+                        borderColor: 'red',
+                        fill: false
+                    },
+                    {
+                        label: 'Белки (г)',
+                        data: totalProteins,
+                        borderColor: 'green',
+                        fill: false
+                    },
+                    {
+                        label: 'Углеводы (г)',
+                        data: totalCarbs,
+                        borderColor: 'blue',
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Время'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Граммы'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Calories Chart
+        const ctx2 = document.getElementById('caloriesChart').getContext('2d');
+        const caloriesChart = new Chart(ctx2, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Ккалории',
+                        data: totalCalories,
+                        borderColor: 'orange',
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Время'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Калории'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

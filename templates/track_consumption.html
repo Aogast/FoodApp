@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Food Consumption</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 40px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            text-align: center;
+            width: 80%;
+            overflow-y: auto;
+            max-height: 80vh;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        input {
+            padding: 10px;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        .btn {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .message {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+        .back-to-home:hover {
+            background-color: #45a049;
+        }
+        .back-to-home {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="back-to-home">Главный экран</a>
+    <div class="container">
+        <h1>Добавление приема пищи в календарь</h1>
+
+        <form action="/track_consumption" method="POST">
+            <div class="form-group">
+                <input type="date" name="consumption_date" required>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Название блюда</th>
+                        <th>Ккалории</th>
+                        <th>Белки</th>
+                        <th>Жиры</th>
+                        <th>Углеводы</th>
+                        <th>Сколько грамм вы съели</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for dish in dishes %}
+                    <tr>
+                        <td>{{ dish.dish_name }}</td>
+                        <td>{{ dish.calories }}</td>
+                        <td>{{ dish.proteins }}</td>
+                        <td>{{ dish.fats }}</td>
+                        <td>{{ dish.carbs }}</td>
+                        <td>
+                            <input type="number" name="grams_{{ dish.id }}" placeholder="Граммы" min="0">
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <button type="submit" class="btn">Добавить прием пищи</button>
+        </form>
+
+        {% if message %}
+            <div class="message">
+                {{ message }}
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
