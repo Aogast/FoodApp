@@ -129,7 +129,7 @@ def dashboard():
 @app.route('/add_dish', methods=['GET', 'POST'])
 def add_dish():
     conn = get_db_connection()
-    message = ""  # Переменная для сообщения о статусе
+    message = ""  
     if request.method == 'POST':
         dish_name = request.form['dish_name']
         calories = request.form['calories']
